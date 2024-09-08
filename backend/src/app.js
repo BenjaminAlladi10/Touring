@@ -1,5 +1,6 @@
 import express from "express";
 import cors from "cors";
+import cookieParser from "cookie-parser";
 
 
 import userRouter from "./routes/user.routes.js";
@@ -19,7 +20,10 @@ app.use(cors({
     origin: "*",
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'], 
     allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true
 }));
+
+app.use(cookieParser());
 
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/monuments", monuRouter);

@@ -1,11 +1,17 @@
 import React, {useState} from 'react';
 import axios from 'axios';
 
+import { useContext } from 'react';
+import userContext from '../contexts/userContext';
+
 export default function LogIn() {
   const [showLogin, setShowLogin]= useState(true);
 
   const [loginData, setLoginData] = useState({ email: '', password: '' });
   const [registerData, setRegisterData] = useState({ username: '', fullName:'', email: '', password: '', termsAccepted: false });
+
+  const {setUser}= useContext(userContext);
+  // console.log("useContext:", user);
 
   const showLogInForm= ()=>{
     setShowLogin(true);
@@ -24,12 +30,32 @@ export default function LogIn() {
     setRegisterData({ ...registerData, [name]: type === 'checkbox' ? checked : value });
   };
 
-  const handleLoginSubmit = (e) => {
+  const handleLoginSubmit = async(e) => {
     e.preventDefault();
 
     // API request
+    try {
+      const response= await axios.post("/api/v1/users/login", loginData);
+      console.log("Login successful:", response);
 
-    console.log('Login data submitted:', loginData);
+      const userData= {...response.data.data.user};
+
+      setUser(userData);
+
+      alert(`Welcome back ${response.data.data.user.username}, \n Login successful`);
+    } 
+    catch (error) {
+      // console.log(error);
+      if(error?.response?.status===500)
+      {
+        console.log(error.response.statusText);
+        alert("Login failed");
+        return;
+      }
+
+      console.error('Login failed:', error.response.data.error.errorMessage);
+      alert('Login failed '+  error.response.data.error.errorMessage);
+    }
   };
 
 
@@ -55,6 +81,14 @@ export default function LogIn() {
       alert(`Hello ${response.data.data.username}! \nRegistration successful. \n Please Login to continue.`);
     } 
     catch (error) {
+      // console.log(error);
+
+      if(error?.response?.status===500)
+      {
+        console.log(error.response.statusText);
+        alert("Registration failed");
+        return;
+      }
       console.error('Registration failed:', error.response.data.error.errorMessage);
       alert('Registration failed '+  error.response.data.error.errorMessage);
     }

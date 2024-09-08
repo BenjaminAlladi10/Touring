@@ -36,7 +36,6 @@ const userSchema= new mongoose.Schema({
     isAdmin: {
         type: Boolean,
         required: false,
-        enum: [true, false],
         default: false
     },
 
@@ -56,8 +55,12 @@ userSchema.pre("save", async function (next){
     next();
 });
 
+userSchema.methods.isPasswordCorrect= async function(password){
+    return await bcrypt.compare(password, this.password);
+};
+
 // Generate RefreshToken:
-userSchema.methods.generateRefreashTokem= function(){
+userSchema.methods.generateRefreshToken= function(){
     return jwt.sign(
         {
             _id: this._id

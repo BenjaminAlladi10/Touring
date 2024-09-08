@@ -1,8 +1,11 @@
 import { createContext } from "react";
 
 const userContext= createContext({
-
+    username: "",
+    email: "",
+    fullName: "",
+    isAdmin: ""
 });
 
 export default userContext;
-export const userProvider= userContext.Provider;
+export const UserProvider= userContext.Provider;

@@ -8,8 +8,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMoon } from '@fortawesome/free-solid-svg-icons';
 import { useSelector } from 'react-redux';
 
+import userContext from '../contexts/userContext.js';
+import axios from 'axios';
+
 export default function NavBar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const {user, setUser}= useContext(userContext);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -24,6 +29,30 @@ export default function NavBar() {
     localStorage.setItem("cartItems", JSON.stringify(cartItems));
   }, [cartItems]);
 
+  // console.log("NavBar rendered");
+
+  const handleLogout= async(e)=>{
+    const ans= prompt("Are you sure you want to log out");
+    if (ans) {
+      console.log("User confirmed logout.");
+      
+      try {
+        const response= await axios.post("api/v1/users/logout");
+        console.log(response);
+
+        setUser();
+        alert(response.data.statusMessage);
+      } 
+      catch (error) {
+        console.log("User logout failed", error);
+      }
+    } 
+    else {
+      console.log("User canceled logout.");
+    }
+  };
+
+  // console.log(user,user.isAdmin);
   return (
     <nav className="bg-white border-gray-200 dark:bg-gray-900 mb-8 shadow-md dark:shadow-none">
       <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
@@ -45,6 +74,10 @@ export default function NavBar() {
         
         <div className={`${isMenuOpen ? 'block' : 'hidden'} w-full md:block md:w-auto`} id="navbar-default">
           <ul className="font-medium flex flex-col items-center p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
+            {user && user.isAdmin && <li>
+              <Link to="/admin" className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Admin</Link>
+            </li>}
+
             <li>
               <Link to="/" className="block py-2 px-3 text-black  bg-blue-700 rounded md:bg-transparent hover:text-blue-700 md:p-0 dark:text-white">
                 Home
@@ -65,13 +98,19 @@ export default function NavBar() {
                   <span className="absolute -top-2 left-5 scale-95 font-semibold">{cartItems.length}</span>
               </Link>
             </li>
-            <li className="px-4 py-1 border-[1px] border-blue-600 border-solid bg-blue-600 active:scale-95">
-              <Link to="/login" className="block p-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:p-0 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Login</Link>
+            <li className="px-[0.4rem] py-[0.2rem] border-[1px] border-blue-600 border-solid bg-blue-600 active:scale-95">
+              {!user? (<Link to="/login" className="block p-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:p-0 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Login</Link>):
+              (<button className="block p-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:p-0 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent" onClick={handleLogout}>Logout</button>)}
             </li>
 
             <li className="dark:text-white cursor-pointer" onClick={changeTheme}>
               <FontAwesomeIcon icon={faMoon} />
             </li>
+
+            {user && <li to="/" className="py-2 px-3 text-black flex flex-col items-center cursor-pointer bg-blue-700 rounded md:bg-transparent hover:text-blue-700 md:p-0 dark:text-white">
+                <div className="w-10 h-10 border-[1px] border-black dark:border-white border-solid rounded-[50%] mt-2"></div>
+                <span className="text-sm mt-1 font-sans">{user.username}</span>
+            </li>}
           </ul>
         </div>
       </div>

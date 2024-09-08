@@ -7,7 +7,8 @@ const asyncHandler= (requestHandler)=> async(req, res, next)=>{
         
         res.status(err.statusCode || 500)
         .json({
-            error: err
+            error: err,
+            message: err.message || "Internal Server Error"
         });
     }
 };
