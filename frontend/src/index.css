@@ -1,0 +1,7 @@
+*{
+  font-family: "PT Sans", Calibri, sans-serif;
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
