@@ -13,7 +13,7 @@ export default function Body() {
           // console.log("making get request...");
           const response = await axios.get("api/v1/monuments/getallmonuments");
           console.log("response:", response);
-          setMonuments(response.data);  // Store the fetched data
+          setMonuments(response.data.data);
         } 
         catch (err) 
         {
@@ -28,12 +28,12 @@ export default function Body() {
     <div className="flex justify-center items-center">
             <div className="w-4 h-4 border-2 border-t-2 border-gray-300 border-t-blue-500 rounded-full animate-spin"></div>
             <span className="ml-1 text-lg text-gray-600 dark:text-white">Loading...</span>
-        </div>
+    </div>
   ):(
-    <div className="w-[75%] mx-auto flex md:flex-row md:gap-x-4 flex-wrap justify-evenly gap-y-8 sm:flex-col sm:items-center">
+    <div className="w-[75%] mx-auto flex md:flex-row mt-8 mb-8 md:gap-x-4 flex-wrap justify-evenly gap-y-8 sm:flex-col sm:items-center">
         {
-          monuments.map(monument=>
-            <MonumentCard monument={monument} key={monument.id}/>
+          monuments.map((monument, index)=>
+            <MonumentCard monument={monument} key={index}/>
           )
         }
     </div>

@@ -11,6 +11,8 @@ import { useSelector } from 'react-redux';
 import userContext from '../contexts/userContext.js';
 import axios from 'axios';
 
+import userImg from '../userImg.jpg';
+
 export default function NavBar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -54,7 +56,7 @@ export default function NavBar() {
 
   // console.log(user,user.isAdmin);
   return (
-    <nav className="bg-white border-gray-200 dark:bg-gray-900 mb-8 shadow-md dark:shadow-none">
+    <nav className="bg-white border-gray-200 dark:bg-gray-900 shadow-md dark:shadow-none">
       <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
         <Link to="/" className="flex items-center space-x-3 rtl:space-x-reverse">
           <img src="https://flowbite.com/docs/images/logo.svg" className="h-8" alt="Flowbite Logo" />
@@ -73,19 +75,19 @@ export default function NavBar() {
         </button>
         
         <div className={`${isMenuOpen ? 'block' : 'hidden'} w-full md:block md:w-auto`} id="navbar-default">
-          <ul className="font-medium flex flex-col items-center p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
+          <ul className="font-medium flex flex-col items-center p-4 pr-0 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700 -mr-8">
             {user && user.isAdmin && <li>
               <Link to="/admin" className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Admin</Link>
             </li>}
 
             <li>
-              <Link to="/" className="block py-2 px-3 text-black  bg-blue-700 rounded md:bg-transparent hover:text-blue-700 md:p-0 dark:text-white">
+              <Link to="/" className="block py-2 px-3 text-black bg-blue-700 rounded md:bg-transparent hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">
                 Home
               </Link>
             </li>
-            <li>
+            {false && <li>
               <Link to="/about" className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">About</Link>
-            </li>
+            </li>}
             <li>
               <Link to="/contact" className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Contact</Link>
             </li>
@@ -107,9 +109,9 @@ export default function NavBar() {
               <FontAwesomeIcon icon={faMoon} />
             </li>
 
-            {user && <li to="/" className="py-2 px-3 text-black flex flex-col items-center cursor-pointer bg-blue-700 rounded md:bg-transparent hover:text-blue-700 md:p-0 dark:text-white">
-                <div className="w-10 h-10 border-[1px] border-black dark:border-white border-solid rounded-[50%] mt-2"></div>
-                <span className="text-sm mt-1 font-sans">{user.username}</span>
+            {user && <li to="/" className="py-2 pl-3 text-black flex flex-col items-center cursor-pointer bg-blue-700 rounded md:bg-transparent hover:text-blue-700 md:p-0 dark:text-white">
+                <img src={userImg} alt="user" className="w-8 rounded-[50%] mt-2"/>
+                <span className="text-xs font-sans">{user.username}</span>
             </li>}
           </ul>
         </div>

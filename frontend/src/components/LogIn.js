@@ -4,6 +4,8 @@ import axios from 'axios';
 import { useContext } from 'react';
 import userContext from '../contexts/userContext';
 
+import { useNavigate } from 'react-router-dom';
+
 export default function LogIn() {
   const [showLogin, setShowLogin]= useState(true);
 
@@ -12,6 +14,8 @@ export default function LogIn() {
 
   const {setUser}= useContext(userContext);
   // console.log("useContext:", user);
+
+  const navigate= useNavigate();
 
   const showLogInForm= ()=>{
     setShowLogin(true);
@@ -43,6 +47,7 @@ export default function LogIn() {
       setUser(userData);
 
       alert(`Welcome back ${response.data.data.user.username}, \n Login successful`);
+      navigate("/");
     } 
     catch (error) {
       // console.log(error);
@@ -79,6 +84,7 @@ export default function LogIn() {
       console.log('Registration successful:', response);
 
       alert(`Hello ${response.data.data.username}! \nRegistration successful. \n Please Login to continue.`);
+      navigate("/login");
     } 
     catch (error) {
       // console.log(error);
@@ -100,8 +106,8 @@ export default function LogIn() {
   return (
     <div className="w-6/12 md:w-4/12 mx-auto py-6 flex flex-col justify-center items-center border-[1px] border-gray-400 border-solid rounded-md shadow-md shadow-gray-600 relative">
         <div className="mb-6 flex flex-col md:flex-row gap-2">
-          <button className={`${showLogin?"bg-white text-black scale-105": "bg-black text-white scale-75"} px-5 py-1 rounded-3xl`} onClick={showLogInForm}>Log In</button>
-          <button className={`${!showLogin? "bg-white text-black scale-105": "bg-black text-white scale-75"} px-4 py-1  rounded-3xl`} onClick={showRegisterForm}>Register</button>
+          <button className={`${showLogin?"bg-gray-100 text-black scale-105": "bg-black text-white scale-75"} px-5 py-1 rounded-3xl`} onClick={showLogInForm}>Log In</button>
+          <button className={`${!showLogin? "bg-gray-100 text-black scale-105": "bg-black text-white scale-75"} px-4 py-1  rounded-3xl`} onClick={showRegisterForm}>Register</button>
         </div>
 
         {showLogin &&<form action="" onSubmit={handleLoginSubmit} className="flex flex-col gap-y-6 items-center w-10/12" id="logInForm">

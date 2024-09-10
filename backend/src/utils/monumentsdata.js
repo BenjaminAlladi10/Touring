@@ -54,4 +54,4 @@ const monuments=[
         description: "Tajmahal monument"
     },
 ];
-export default monuments
+export default monuments;

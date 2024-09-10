@@ -4,7 +4,7 @@ const monumentSchema= new Schema({
     name: {
         type: String,
         required: true,
-        unique: [true, "Monumentname must be unique"],
+        unique: [true, "Monument's name must be unique"],
         index: true
     },
     description: {
@@ -15,20 +15,18 @@ const monumentSchema= new Schema({
         type: String,
         required: true
     },
-    imageUrl: {
+    image: {
         type: String,
-        required: true,
-        unique: true
+        required: true
     },
     location: {
         type: String,
         required: [true, "location is required"]
     },
-    prices: [
-        {
-
-        }
-    ]
+    price: {
+        type: Number,
+        required: true
+    }
 }, {timestamps: true});
 
 

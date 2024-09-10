@@ -10,6 +10,7 @@ import Contact from './components/Contact.js';
 import Cart from './components/Cart.js';
 import LogIn from './components/LogIn.js';
 import ErrorPage from './components/ErrorPage.js';
+import Admin from './components/Admin/Admin.js';
 
 import {Provider} from "react-redux";
 import appStore from './store/store.js';
@@ -43,6 +44,10 @@ const router= createBrowserRouter([
       {
         path: "/login",
         element: <LogIn/>
+      },
+      {
+        path: "/admin",
+        element: <Admin/>
       }
     ]
   }

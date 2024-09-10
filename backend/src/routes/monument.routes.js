@@ -1,13 +1,15 @@
 import { Router } from "express";
-import monumentsData from "../utils/data.js";
+import { addMonument, deleteMonument, editMonument, getAllMonuments, getMonument } from "../controllers/monument.controller.js";
+import {upload} from "../middlewares/multer.middleware.js";
+import { findUser } from "../middlewares/findUser.middleware.js";
+
 const router= Router();
 
-router.get("/getallmonuments", (req, res)=>{
-    console.log("getting all monuments from backend");
-    
-    return res.status(200)
-    .set('Content-Type', 'application/json')
-    .send(monumentsData);
-});
+router.route("/addmonument").post(upload.single("image"), findUser, addMonument);
+router.route("/deletemonument").delete(findUser, deleteMonument);
+router.route("/editmonument").patch(findUser, editMonument);
+
+router.route("/getmonument").get(findUser, getMonument);
+router.route("/getallmonuments").get(getAllMonuments);
 
 export default router;
