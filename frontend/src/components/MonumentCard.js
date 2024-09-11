@@ -1,4 +1,4 @@
-import React from 'react';
+import {useState} from 'react';
 import { useDispatch } from 'react-redux';
 import { addMonument} from '../store/cartSlice';
 import { toast } from 'react-toastify';
@@ -7,11 +7,19 @@ import 'react-toastify/dist/ReactToastify.css';
 export default function MonumentCard({ monument }) {
   const { name, description, image, location, price } = monument;
 
+  const [quantity, setQuantity] = useState(1);
+
   const dispatch= useDispatch();
 
   const handleClick= (e)=>{
-    dispatch(addMonument(monument));
-    toast.success("Added to Cart");
+    const item= {...monument, quantity};
+    dispatch(addMonument(item));
+    toast.success(`Added ${item.quantity} item(s) to Cart`);
+  };
+
+  const handleQuantityChange = (e) => {
+    // console.log(e.target.value);
+    setQuantity(parseInt(e.target.value));
   };
 
   // console.log(Object.keys([...Array(10)]));
@@ -34,7 +42,7 @@ export default function MonumentCard({ monument }) {
 
         <p className="mb-2 text-[0.95rem] text-gray-700 dark:text-gray-300">
           Tickets:
-          <select name="" id="" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+          <select name="" id=""  onChange={handleQuantityChange} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
           {
             Object.keys([...Array(10)]).map((val, ind)=>
               <option value={parseInt(val)+1} key={parseInt(val)+1}>

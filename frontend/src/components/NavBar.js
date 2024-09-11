@@ -25,7 +25,7 @@ export default function NavBar() {
 
   const {changeTheme}= useContext(themeContext);
 
-  const cartItems= useSelector((state)=> state.cart.items);
+  const cartItems= useSelector((state)=> state.cart.cartItems);
   // console.log("cartItems:", cartItems);
 
   useEffect(()=>{

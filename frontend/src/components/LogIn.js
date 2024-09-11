@@ -108,7 +108,7 @@ export default function LogIn() {
   // console.log(registerData);
 
   return (
-    <div className="w-6/12 md:w-4/12 mx-auto py-6 flex flex-col justify-center items-center border-[1px] border-gray-400 border-solid rounded-md shadow-md shadow-gray-600 relative">
+    <div className="w-6/12 md:w-4/12 mx-auto py-6 flex flex-col justify-center items-center border-[1px] border-gray-400 border-solid rounded-md shadow-md shadow-gray-600 relative my-4">
         <div className="mb-6 flex flex-col md:flex-row gap-2">
           <button className={`${showLogin?"bg-gray-100 text-black scale-105": "bg-black text-white scale-75"} px-5 py-1 rounded-3xl`} onClick={showLogInForm}>Log In</button>
           <button className={`${!showLogin? "bg-gray-100 text-black scale-105": "bg-black text-white scale-75"} px-4 py-1  rounded-3xl`} onClick={showRegisterForm}>Register</button>

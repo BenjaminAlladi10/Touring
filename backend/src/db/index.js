@@ -4,7 +4,7 @@ async function connectDB()
 {
     try
     {
-        const connectionInstance= await mongoose.connect(`${process.env.DB_URI}/${process.env.DB_NAME}`);
+        const connectionInstance=await mongoose.connect(`${process.env.DB_URI}/${process.env.DB_NAME}`);
 
         console.log(connectionInstance.connection.host);
     }

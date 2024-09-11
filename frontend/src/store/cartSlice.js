@@ -7,23 +7,34 @@ const cartSlice= createSlice({
     name: "cart",
 
     initialState: {
-        items: cartItems,
+        cartItems: cartItems,
+
+
     },
 
     reducers: {
-
         addMonument: (state, action)=>{
-            const newMonument= action.payload;
-            state.items.push(newMonument);
+            const monumentItem= action.payload;
+
+            const index= state.cartItems.findIndex((item)=>item._id=== monumentItem._id);
+            if(index===-1)
+            {
+                state.cartItems.push(monumentItem);
+            }
+            else
+            {
+                state.cartItems[index].quantity= monumentItem.quantity;
+            }
         },
 
         removeMonument: (state, action)=>{
-            state.items= state.items.filter((item)=> item.id!==action.payload);
+            const monumentItemId= action.payload;
+            state.cartItems= state.cartItems.filter((item)=> item._id!==monumentItemId);
         },
 
         clearCart: (state, action)=>{
             return {
-                items:[]
+                cartItems:[]
             };
         }
     }
