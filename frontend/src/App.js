@@ -5,6 +5,8 @@ import { Outlet } from 'react-router-dom';
 
 import { ThemeProvider } from './contexts/themeContext';
 import { UserProvider } from './contexts/userContext';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   const [theme, setTheme]= useState(localStorage.getItem("preferredTheme") || "dark");
@@ -32,6 +34,7 @@ function App() {
         <div className="flex flex-col justify-between min-h-screen dark:bg-gray-800 dark:border-gray-70">
           <NavBar/>
           <Outlet/>
+          <ToastContainer position="bottom-right" autoClose={2000} theme="colored"/>
           <Footer/>
         </div>
       </ThemeProvider>

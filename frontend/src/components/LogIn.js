@@ -5,6 +5,7 @@ import { useContext } from 'react';
 import userContext from '../contexts/userContext';
 
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 export default function LogIn() {
   const [showLogin, setShowLogin]= useState(true);
@@ -46,7 +47,7 @@ export default function LogIn() {
 
       setUser(userData);
 
-      alert(`Welcome back ${response.data.data.user.username}, \n Login successful`);
+      toast.success(`Welcome back, ${response.data.data.user.username}`);
       navigate("/");
     } 
     catch (error) {
@@ -54,12 +55,12 @@ export default function LogIn() {
       if(error?.response?.status===500)
       {
         console.log(error.response.statusText);
-        alert("Login failed");
+        toast.warning("Login failed");
         return;
       }
 
       console.error('Login failed:', error.response.data.error.errorMessage);
-      alert('Login failed '+  error.response.data.error.errorMessage);
+      toast.error('Login failed '+  error.response.data.error.errorMessage);
     }
   };
 
@@ -69,12 +70,14 @@ export default function LogIn() {
 
     if (!registerData.termsAccepted)
     {
-      alert('Please accept the terms and conditions.');
+      toast.warning('Please accept the terms and conditions.');
+      return;
     }
 
     if([registerData.username, registerData.email, registerData.password].some((field)=>!field?.trim()))
     {
-      alert("All fields are required.");
+      toast.warning("All fields are required.");
+      return;
     }
       
 
@@ -83,7 +86,8 @@ export default function LogIn() {
       const response= await axios.post("/api/v1/users/register", registerData);
       console.log('Registration successful:', response);
 
-      alert(`Hello ${response.data.data.username}! \nRegistration successful. \n Please Login to continue.`);
+      // alert(`Hello ${response.data.data.username}! \nRegistration successful. \n Please Login to continue.`);
+      toast.info("Registration successful. Please Login to continue.")
       navigate("/login");
     } 
     catch (error) {
@@ -92,11 +96,11 @@ export default function LogIn() {
       if(error?.response?.status===500)
       {
         console.log(error.response.statusText);
-        alert("Registration failed");
+        toast.warning("Internal Server Error");
         return;
       }
       console.error('Registration failed:', error.response.data.error.errorMessage);
-      alert('Registration failed '+  error.response.data.error.errorMessage);
+      toast.error('Registration failed '+  error.response.data.error.errorMessage);
     }
   };
 
@@ -130,7 +134,7 @@ export default function LogIn() {
           <input type="password" name='password' placeholder="Password" required value={registerData.password} onChange={handleRegisterChange} className="border border-gray-300 outline-none bg-white text-black block w-full rounded-md py-2 px-3 shadow-sm focus:border-sky-500 focus:ring-sky-500 dark:border-white/5 dark:bg-slate-700/50 dark:text-white"/>
 
           <div>
-            <input type="checkbox" name="termsAccepted" required checked={registerData.termsAccepted} onChange={handleRegisterChange} id="inp" className="align-middle"></input>
+            <input type="checkbox" name="termsAccepted" checked={registerData.termsAccepted} onChange={handleRegisterChange} id="inp" className="align-middle"></input>
             <label htmlFor="inp" className="dark:text-gray-200 pl-1">I agree to the terms and conditions.</label>
           </div>
 

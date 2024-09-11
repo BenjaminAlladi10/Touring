@@ -1,6 +1,8 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { addMonument} from '../store/cartSlice';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function MonumentCard({ monument }) {
   const { name, description, image, location, price } = monument;
@@ -9,9 +11,10 @@ export default function MonumentCard({ monument }) {
 
   const handleClick= (e)=>{
     dispatch(addMonument(monument));
+    toast.success("Added to Cart");
   };
 
-  console.log(Object.keys([...Array(10)]));
+  // console.log(Object.keys([...Array(10)]));
   return (
     <div className="w-[16rem] bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-500 hover:scale-[1.05]">
       <img className="rounded-[1.2rem] p-2" src={image} alt="" />
@@ -31,16 +34,18 @@ export default function MonumentCard({ monument }) {
 
         <p className="mb-2 text-[0.95rem] text-gray-700 dark:text-gray-300">
           Tickets:
-          <select name="" id="" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+          <select name="" id="" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
           {
-            Object.keys([...Array(10)]).map((val)=>
-              <option value={parseInt(val)}>{parseInt(val)+1}</option>
+            Object.keys([...Array(10)]).map((val, ind)=>
+              <option value={parseInt(val)+1} key={parseInt(val)+1}>
+                {parseInt(val)+1}
+              </option>
             )
           }
           </select>
         </p>
 
-        <button className="inline-flex items-center px-3 py-1 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+        <button className="inline-flex items-center px-3 py-1 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700 active:scale-95"
         onClick={handleClick}>
           Add to Cart
         </button>

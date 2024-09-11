@@ -3,6 +3,7 @@ import { ApiError } from "../utils/apiError.js";
 import {ApiResponse} from "../utils/apiResponse.js";
 
 import {User} from "../models/user.model.js";
+import { uploadOnCloudinary } from "../utils/cloudinary.js";
 
 
 const generateRefreshAndAccessToken= async(id)=>{
@@ -33,7 +34,6 @@ const registerUser= asyncHandler(async(req, res)=>{
     console.log(req.body);
     if([username, fullName, email, password].some((field)=> !field?.trim()))
     {
-        // console.log("fields missing");
         throw new ApiError(400, "All fields are required");
     }
 
@@ -46,11 +46,24 @@ const registerUser= asyncHandler(async(req, res)=>{
         throw new ApiError(409, "User with this username or email already exists");
     }
 
+    const avatarLocalPath= req?.file?.path;
+    if(!avatarLocalPath)
+    {
+        throw new ApiError(400, "Monument image is missing");
+    }
+
+    const uploadResult= await uploadOnCloudinary(avatarLocalPath);
+    if (!uploadResult?.url) 
+    {
+        throw new ApiError(400, "Error while uploading monument image to cloudinary");   
+    }
     const user= await User.create({
         username,
         email,
         fullName,
-        password
+        password,
+        avatar: uploadResult?.url,
+        isAdmin: req?.body?.isAdmin
     });
 
     const createdUser= await User.findOne({_id: user._id}).select("-password");
@@ -157,8 +170,9 @@ const deleteUser= asyncHandler(async(req, res)=>{
         throw new ApiError(403, "Forbidden: Not authorized to perform this action");
     }
 
-    const user=await User.findByIdAndDelete(req.user._id).select("-password -refreshToken");
+    const user=await User.findByIdAndDelete(req.body._id).select("-password -refreshToken");
 
+    console.log(req.user._id, user);
     if(!user)
     {
         throw new ApiError(404, "User not found");

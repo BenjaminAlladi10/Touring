@@ -4,7 +4,8 @@ import { useState } from 'react';
 export default function Dashboard({setChoice}) {
 
   const [showOptions, setShowOptions]= useState(true);
-  const adminOptions = ['Add', 'Edit', 'Delete', 'Get'];
+  const adminMonumentOptions = ['Add', 'Edit', 'Delete', 'Get'];
+  const adminUserOptions= ["All Users"];
 
   return (
     <div className='overflow-hidden flex flex-col justify-start h-[100vh] w-[22%] bg-gray-50 border-gray-200 dark:bg-gray-900 shadow-md dark:shadow-gray-400'>
@@ -18,7 +19,16 @@ export default function Dashboard({setChoice}) {
         </div>
 
         <ul>
-        {showOptions && adminOptions.map((option) => (
+        {showOptions && adminMonumentOptions.map((option) => (
+            <li key={option} className="text-lg hover:bg-gray-400 mx-auto text-center pb-2 border-b border-b-slate-300 dark:border-b-slate-500 dark:hover:bg-gray-700 cursor-pointer" onClick={()=>setChoice(option)}>
+                {option}
+            </li>
+        ))}
+
+        </ul>
+
+        <ul>
+        {showOptions && adminUserOptions.map((option) => (
             <li key={option} className="text-lg hover:bg-gray-400 mx-auto text-center pb-2 border-b border-b-slate-300 dark:border-b-slate-500 dark:hover:bg-gray-700 cursor-pointer" onClick={()=>setChoice(option)}>
                 {option}
             </li>

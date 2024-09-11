@@ -17,7 +17,6 @@ import appStore from './store/store.js';
 
 import {createBrowserRouter, RouterProvider} from "react-router-dom";
 
-
 const router= createBrowserRouter([
   {
     path:"/",

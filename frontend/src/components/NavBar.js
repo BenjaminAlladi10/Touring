@@ -12,6 +12,7 @@ import userContext from '../contexts/userContext.js';
 import axios from 'axios';
 
 import userImg from '../userImg.jpg';
+import { toast } from 'react-toastify';
 
 export default function NavBar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -43,14 +44,15 @@ export default function NavBar() {
         console.log(response);
 
         setUser();
-        alert(response.data.statusMessage);
+        // alert(response.data.statusMessage);
+        toast.success("Logged out");
       } 
       catch (error) {
         console.log("User logout failed", error);
       }
     } 
     else {
-      console.log("User canceled logout.");
+      console.log("User cancelled logout.");
     }
   };
 
@@ -60,7 +62,7 @@ export default function NavBar() {
       <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
         <Link to="/" className="flex items-center space-x-3 rtl:space-x-reverse">
           <img src="https://flowbite.com/docs/images/logo.svg" className="h-8" alt="Flowbite Logo" />
-          <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">Touring</span>
+          <span className="self-center md:text-2xl text-md font-semibold whitespace-nowrap dark:text-white">Ticketless Touring</span>
         </Link>
         <button 
           data-collapse-toggle="navbar-default" 

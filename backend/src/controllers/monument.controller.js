@@ -36,7 +36,8 @@ const addMonument= asyncHandler(async(req, res)=>{
 
     const uploadResult=await uploadOnCloudinary(imgLocalPath);
 
-    if (!uploadResult?.url) {
+    if (!uploadResult?.url) 
+    {
         throw new ApiError(400, "Error while uploading monument image to cloudinary");   
     }
 
