@@ -1,8 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchMonuments } from '../../store/monumentsSlice';
+import MonumentCard from '../MonumentCard';
+import userContext from '../../contexts/userContext';
 
 export default function AdminForm({choice}) {
 
@@ -12,6 +14,8 @@ export default function AdminForm({choice}) {
     useEffect(()=>{
         dispatch(fetchMonuments());
     }, []);
+
+    const [result, setResult]= useState(null);
 
     const fields = [
         { type: "text", name: "name", label: "Name", required: true },
@@ -63,7 +67,7 @@ export default function AdminForm({choice}) {
             data.append('category', formData.category);
             data.append('description', formData.description);
             
-            console.log('Adding new monument', data); 
+            // console.log('Adding new monument', data); 
             
             try {
                 const response = await axios.post("api/v1/monuments/addmonument", data, {
@@ -72,7 +76,8 @@ export default function AdminForm({choice}) {
                     }
                 });
 
-                console.log(response.data.data);
+                // console.log(response.data.data);
+                setResult(response.data.data);
                 toast.success(response.data.statusMessage);
             } 
             catch (error) {
@@ -90,7 +95,7 @@ export default function AdminForm({choice}) {
             data.append('category', formData.category);
             data.append('description', formData.description);
 
-            console.log('Editing monument', data); 
+            // console.log('Editing monument', data); 
 
             try {
                 const response = await axios.patch("api/v1/monuments/editmonument", data, {
@@ -99,7 +104,8 @@ export default function AdminForm({choice}) {
                     }
                 });
 
-                console.log(response.data.data);  
+                // console.log(response.data.data); 
+                setResult(response.data.data); 
                 toast.success(response.data.statusMessage);
             } 
             catch (error) {
@@ -110,14 +116,15 @@ export default function AdminForm({choice}) {
         else if (choice === 'Delete') 
         {
             data.append("_id", formData.selectedMonument);
-            console.log('Deleting monument with ID:', formData.selectedMonument);
+            // console.log('Deleting monument with ID:', formData.selectedMonument);
 
             try {
                 const response = await axios.post("api/v1/monuments/deletemonument", {
                     _id: formData.selectedMonument 
                 });
 
-                console.log(response.data.data);
+                // console.log(response.data.data);
+                setResult(response.data.data);
                 toast.success(response.data.statusMessage);  
             } 
             catch (error) {
@@ -128,14 +135,29 @@ export default function AdminForm({choice}) {
         else if (choice === 'Get') 
         {
             data.append("_id", formData.selectedMonument);
-            console.log('Fetching monument details for ID:', data.selectedMonument);
+            // console.log('Fetching monument details for ID:', formData.selectedMonument);
 
             try {
                 const response = await axios.post("/api/v1/monuments/getmonument", {
                     _id: formData.selectedMonument
                 });
 
-                console.log(response.data.data);
+                // console.log(response.data.data);
+                setResult(response.data.data);
+                toast.success(response.data.statusMessage);  
+            } 
+            catch (error) {
+                console.error(error.response.data.message); 
+                toast.error(error.response.data.message); 
+            }
+        }
+        else if(choice==="All Users")
+        {
+            try {
+                const response = await axios.get("/api/v1/users/getallusers");
+
+                // console.log(response.data.data);
+                setResult(response.data.data);
                 toast.success(response.data.statusMessage);  
             } 
             catch (error) {
@@ -169,9 +191,28 @@ export default function AdminForm({choice}) {
             selectedMonument: monuments[0]._id
           }));
         }
-      }, [monuments]);
+      }, []);
 
     // console.log(formData, monuments);
+    // console.log("result:", result);
+
+    const {user:loginUser}= useContext(userContext);
+    // console.log(loginUser);
+
+    const handleDelete= async(user)=>{
+        try {
+            const response= await axios.post("/api/v1/users/deleteuser", {
+                _id: user._id
+            });
+
+            // console.log(response);
+            toast.success(response.data.data.username +": "+ response.data.statusMessage);
+            setResult((prevUsers) => prevUsers.filter(pUser => pUser._id !== user._id));
+        } 
+        catch (error) {
+            toast.error(error.response.data.message); 
+        }
+    }
       
   return (
     <div className='mt-2 mx-auto'>
@@ -223,13 +264,74 @@ export default function AdminForm({choice}) {
                 })
             }
 
-            <div className="flex justify-end flex-wrap sm:col-span-2 mb-2">
+            <div className="flex justify-start flex-wrap sm:col-span-2 mb-4">
                 <button type="submit" className="inline-flex items-center rounded-md px-4 py-2 font-medium focus:outline-none focus-visible:ring focus-visible:ring-sky-500 shadow-sm sm:text-sm transition-colors duration-75 text-sky-500 border border-sky-500 hover:bg-sky-50 active:bg-sky-100 disabled:bg-sky-100 dark:hover:bg-gray-900 dark:active:bg-gray-800 dark:disabled:bg-gray-800 disabled:cursor-not-allowed">
                     <span>Submit</span>
                 </button>
             </div> 
 
         </form>
+
+        {
+            result && choice==="Get" && 
+            <MonumentCard monument={result}/>
+        }
+
+        {
+            result && choice==="Get All" &&
+            <h1>Get All</h1>
+        }
+
+        {
+            result && choice==="All Users" &&
+            
+            <div className="relative mx-auto p-0 mt-4 mb-4">
+                <table className="w-[90%] text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                    <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                        <tr>
+                            <th scope="col" className="px-4 py-2">
+                                username
+                            </th>
+                            <th scope="col" className="px-4 py-2">
+                                email
+                            </th>
+                            <th scope="col" className="px-4 py-2 ">
+                                created at
+                            </th>
+                            <th scope="col" className="px-4 py-2 ">
+                                updated at
+                            </th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {
+                            result.map((user, ind)=>(
+                                <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700" key={ind}>
+                                    <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                        {user.username} {loginUser.username===user.username? "(you)":""}
+                                    </th>
+                                    <td className="px-4 py-2">
+                                        {user.email}
+                                    </td>
+                                    <td className="px-4 py-2 ">
+                                        {user.createdAt}
+                                    </td>
+                                    <td className="px-4 py-2 ">
+                                        {user.updatedAt}
+                                    </td>
+                                    <td>
+                                       <button className="bg-red-600 px-2 py-1 ml-4 rounded-md text-white hover:shadow-md active:scale-95" onClick={()=>handleDelete(user)}>
+                                            Delete
+                                       </button>
+                                    </td>
+                                </tr> 
+                            ))
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
     </div>
   )
 }

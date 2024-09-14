@@ -21,8 +21,14 @@ export default function Admin() {
   return (
     <div className="flex dark:text-white">
         <Dashboard setChoice={setChoice}/>
+        
+        <AdminForm choice={choice}/>
+    </div>
+  );
+}
 
-        {/*<div className='mt-2 mx-auto'>
+
+{/*<div className='mt-2 mx-auto'>
             <h1 className='md:text-2xl text-lg'>
                 {choice} {(choice==="Get All")?"Monuments": choice==="All Users"?"":"Monment"}
             </h1>
@@ -90,8 +96,3 @@ export default function Admin() {
             </form>
 
         </div>*/}
-
-        <AdminForm choice={choice}/>
-    </div>
-  );
-}

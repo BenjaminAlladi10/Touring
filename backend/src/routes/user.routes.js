@@ -11,6 +11,6 @@ router.route("/logout").post(findUser, logoutUser);
 
 router.route("/getcurrentuser").get(findUser, getCurrentUser);
 router.route("/getallusers").get(findUser, getAllUsers);
-router.route("/deleteuser").delete(findUser, deleteUser);
+router.route("/deleteuser").post(findUser, deleteUser);
 
 export default router;
