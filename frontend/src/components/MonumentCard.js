@@ -27,7 +27,7 @@ export default function MonumentCard({ monument }) {
   // console.log(Object.keys([...Array(10)]));
   return (
     <div className="w-[16rem] bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-500 hover:scale-[1.05]">
-      <img className="rounded-[1.2rem] h-44 p-2" src={image} alt="" />
+      <img className="rounded-[1.2rem] h-44 p-2 mx-auto min-w-[98%]" src={image} alt="" />
     
       <div className="p-3 pt-0 text-nowrap overflow-clip">
      
