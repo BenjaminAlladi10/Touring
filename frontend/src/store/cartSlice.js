@@ -8,8 +8,8 @@ const cartSlice= createSlice({
 
     initialState: {
         cartItems: cartItems,
-
-
+        cartTotalQuantity: 0,
+        cartTotalAmount:0
     },
 
     reducers: {
@@ -33,12 +33,28 @@ const cartSlice= createSlice({
         },
 
         clearCart: (state, action)=>{
-            return {
-                cartItems:[]
-            };
+            state.cartItems.length=0;
+
+            // return {
+            //     cartItems:[]
+            // };
+        },
+
+        getTotals: (state, action)=>{
+            const data= state.cartItems.reduce((acc, item, index)=>{
+                const {price, quantity}= item;
+
+                acc.cartTotalQuantity+= quantity;
+                acc.cartTotalAmount+= (price*quantity);
+
+                return acc;
+            }, {cartTotalQuantity:0, cartTotalAmount:0});
+
+            state.cartTotalQuantity= data.cartTotalQuantity;
+            state.cartTotalAmount= data.cartTotalAmount;
         }
     }
 });
 
-export const {addMonument, removeMonument, clearCart}= cartSlice.actions;
+export const {addMonument, removeMonument, clearCart, getTotals}= cartSlice.actions;
 export const cartReducer= cartSlice.reducer;

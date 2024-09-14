@@ -1,11 +1,11 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { addMonument, removeMonument } from '../store/cartSlice';
+import { addMonument, clearCart, getTotals, removeMonument } from '../store/cartSlice';
 import { toast } from 'react-toastify';
 
 const Cart = ()=>{
 
-    const cartItems= useSelector((state)=> state.cart.cartItems);
+    const {cartItems, cartTotalQuantity, cartTotalAmount}= useSelector((state)=> state.cart);
     
     const dispatch= useDispatch();
     const handleIncrement = (item) => {
@@ -15,18 +15,22 @@ const Cart = ()=>{
         return;
       }
       dispatch(addMonument({...item, quantity:item.quantity+1}));
-      toast.success(`Added ${item.quantity+1} item(s) to Cart`);
+      dispatch(getTotals());
+      toast.success(`Added +1 item(s) to Cart`);
     };
 
     const handleDecrement = (item) => {
       if(item.quantity<=1)
       {
         dispatch(removeMonument(item._id));
-        toast.info("Item removed from Cart");
+        dispatch(getTotals());
+
+        toast.warning("Item removed from Cart");
         return;
       }
 
       dispatch(addMonument({...item, quantity:item.quantity-1}));
+      dispatch(getTotals());
       toast.info("1 ticket removed from Cart");
     };
 
@@ -48,7 +52,8 @@ const Cart = ()=>{
 
           <div className="flex justify-between w-[60%] px-6 text-gray-900 dark:text-gray-300">
             <h1 className="font-semibold text-xl">Cart</h1>
-            <button type="button" class="text-white bg-gray-800 hover:bg-gray-900 font-medium rounded-lg text-sm px-5 py-1 me-2 mb-2 dark:bg-gray-100 dark:hover:bg-gray-50 dark:border-gray-100 dark:text-black">
+            <button type="button" className="text-white bg-gray-800 hover:bg-gray-900 font-medium rounded-lg text-sm px-5 py-1 me-2 mb-2 dark:bg-gray-100 dark:hover:bg-gray-50 dark:border-gray-100 dark:text-black active:scale-95"
+            onClick={()=>dispatch(clearCart())}>
               Clear
             </button>
           </div>
@@ -84,6 +89,24 @@ const Cart = ()=>{
 
             </div>
           ))}
+
+          <div className="w-[54%]">
+            <div className="flex gap-1 justify-end items-baseline">
+              <h1 className="text-gray-800 dark:text-gray-100 text-lg font-semibold">Total Quantity:</h1> 
+              <span className="dark:text-gray-100">{cartTotalQuantity} item(s)</span>
+            </div>
+            
+            <div className="flex gap-1 justify-end items-baseline">
+              <h1 className="text-gray-800 dark:text-gray-100 text-lg font-semibold">Total Amount:</h1>   
+              <span className="dark:text-gray-100">₹{cartTotalAmount}</span>
+            </div>
+
+            <div className="flex justify-end">
+              <button className="text-white bg-gray-800 hover:bg-gray-900 font-medium rounded-lg text-sm px-5 py-1 me-2 mb-2 dark:bg-gray-100 dark:hover:bg-gray-50 dark:border-gray-100 dark:text-black active:scale-95">
+                Checkout
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     ):"Hi");

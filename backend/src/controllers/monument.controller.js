@@ -6,8 +6,6 @@ import {Monument} from "../models/monument.model.js";
 import monumentsData from "../utils/monumentsdata.js";
 
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
-import { response } from "express";
-
 
 const addMonument= asyncHandler(async(req, res)=>{
     if(!req?.user?.isAdmin)
@@ -54,7 +52,7 @@ const addMonument= asyncHandler(async(req, res)=>{
 
     return res.status(201)
     .json(
-        new ApiResponse(200, monument, "Monument added Successfully")
+        new ApiResponse(201, monument, "Monument added Successfully")
     );
 });
 
@@ -70,8 +68,36 @@ const editMonument= asyncHandler(async(req, res)=>{
         throw new ApiError(400, "Monument ID is required");
     }
     
-    const monument= await Monument.findByIdAndUpdate(_id, 
-        {...req?.body},
+    const data= req?.body;
+    const filteredData= {};
+
+    for (const k in data)
+    {
+        if(data[k]?.trim())
+        {
+            filteredData[k]= data[k];
+        }
+    }
+
+    if (Object.keys(filteredData).length === 0) 
+    {
+        throw new ApiError(400, "No valid fields provided for update");
+    }
+
+    const imageLocalPath= req.file?.path;
+    if (imageLocalPath) 
+    {
+        const imgUploadResult = await uploadOnCloudinary(imageLocalPath);
+
+        if (!imgUploadResult?.url) {
+            throw new ApiError(400, "Error uploading new image to Cloudinary");
+        }
+
+        filteredData.image = imgUploadResult.url;
+    }
+    
+    const monument= await Monument.findByIdAndUpdate(_id,
+        filteredData,
         {new: true}
     );
     
@@ -116,7 +142,7 @@ const getMonument= asyncHandler(async(req, res)=>{
     const {_id: id}= req?.body;
     if(!id)
     {
-        throw new ApiError(404, "Monumnet ID is required");
+        throw new ApiError(404, "Monument ID is required");
     }
 
     const monument= await Monument.findById(id);

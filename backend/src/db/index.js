@@ -4,7 +4,10 @@ async function connectDB()
 {
     try
     {
-        const connectionInstance=await mongoose.connect(`${process.env.DB_URI}/${process.env.DB_NAME}`);
+        const connectionInstance=await mongoose.connect(`${process.env.DB_URI}/${process.env.DB_NAME}`, {
+            useNewUrlParser: true,         // Use the new MongoDB connection string parser
+            useUnifiedTopology: true,      // Use the new Unified Topology layer
+        });
 
         console.log(connectionInstance.connection.host);
     }

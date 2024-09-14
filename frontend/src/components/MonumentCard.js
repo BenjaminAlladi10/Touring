@@ -1,6 +1,6 @@
 import {useState} from 'react';
 import { useDispatch } from 'react-redux';
-import { addMonument} from '../store/cartSlice';
+import { addMonument, getTotals} from '../store/cartSlice';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -14,6 +14,8 @@ export default function MonumentCard({ monument }) {
   const handleClick= (e)=>{
     const item= {...monument, quantity};
     dispatch(addMonument(item));
+    dispatch(getTotals());
+
     toast.success(`Added ${item.quantity} item(s) to Cart`);
   };
 
@@ -25,7 +27,7 @@ export default function MonumentCard({ monument }) {
   // console.log(Object.keys([...Array(10)]));
   return (
     <div className="w-[16rem] bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-500 hover:scale-[1.05]">
-      <img className="rounded-[1.2rem] p-2" src={image} alt="" />
+      <img className="rounded-[1.2rem] h-44 p-2" src={image} alt="" />
     
       <div className="p-3 pt-0 text-nowrap overflow-clip">
      
