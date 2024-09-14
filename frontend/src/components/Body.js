@@ -30,7 +30,7 @@ export default function Body() {
     )
   }
 
-  return status==="loading" || status==="idle"? (
+  return status==="loading" || status==="pending"? (
     <div className="flex justify-center items-center">
           {/* <div className="w-4 h-4 border-2 border-t-2 border-gray-300 border-t-blue-500 rounded-full animate-spin"></div> */}
           {/* <span className="ml-1 text-lg text-gray-600 dark:text-white">Loading...</span> */}
