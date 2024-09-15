@@ -17,7 +17,7 @@ app.use(express.urlencoded({
 
 
 app.use(cors({
-    origin: "*",
+    origin: "https://ticketless-touring.onrender.com",
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'], 
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true
