@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
+import profile from "./profile.jpg";
+
 export default function About() {
     const [user, setUser] = useState(null);
     const [show, setShow]= useState(false);
@@ -24,12 +26,12 @@ export default function About() {
 
     return user ? (
         <>
-            <button onClick={()=>setShow(!show)} className="w-25 box-content mx-auto px-2 py-1 rounded-sm bg-sky-600 text-white active:scale-95 dark:bg-gray-950 dark:border dark:border-black dark:hover:border-sky-400 hover:bg-gray-800 hover:text-gray-100">
+            <button onClick={()=>setShow(!show)} className="w-25 box-content mx-auto px-2 py-1 rounded-sm bg-sky-600 text-white active:scale-95 dark:border dark:border-sky-400 hover:bg-sky-700 hover:text-gray-100">
                 {show?"Hide":"Show"} Profile
             </button>
 
             {show && <div className="w-full max-w-sm bg-white border border-gray-400 rounded-lg mx-auto flex flex-col items-center py-10 shadow-sm shadow-gray-200 dark:bg-gray-800 dark:border-gray-400 dark:shadow-none">
-                <img className="w-24 h-24 mb-3 rounded-full shadow-lg" src={avatar_url} alt="User avatar" />
+                <img className="w-24 h-24 mb-3 rounded-full shadow-lg" src={profile} alt="User avatar" />
                 <h5 className="mb-1 text-xl font-medium text-gray-900 dark:text-white">{name}</h5>
                 <span className="text-sm text-gray-600 dark:text-gray-400">Web Developer</span>
 
