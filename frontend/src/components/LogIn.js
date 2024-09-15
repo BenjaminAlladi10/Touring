@@ -41,7 +41,10 @@ export default function LogIn() {
 
     // API request
     try {
-      const response= await axios.post(`${backend}/api/v1/users/login`, loginData);
+      const response= await axios.post(`${backend}/api/v1/users/login`, loginData, {
+        withCredentials: true
+      });
+      
       console.log("Login successful:", response);
 
       const userData= {...response.data.data.user};
