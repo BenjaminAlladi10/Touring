@@ -7,7 +7,7 @@ import jwt from "jsonwebtoken";
 const findUser= asyncHandler(async(req, res, next)=>{
     try {
         const accessToken= req.cookies?.accessToken;
-        // console.log("accessToken:", accessToken);
+        console.log("accessToken:", accessToken);
 
         if(!accessToken)
         {
