@@ -41,7 +41,9 @@ export default function NavBar() {
       console.log("User confirmed logout.");
       
       try {
-        const response= await axios.post(`${backend}/api/v1/users/logout`);
+        const response= await axios.post(`${backend}/api/v1/users/logout`, {}, {
+          withCredentials: true
+        });
         console.log(response);
 
         setUser();
