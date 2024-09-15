@@ -6,6 +6,7 @@ import userContext from '../contexts/userContext';
 
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import backend from '../constants';
 
 export default function LogIn() {
   const [showLogin, setShowLogin]= useState(true);
@@ -40,7 +41,7 @@ export default function LogIn() {
 
     // API request
     try {
-      const response= await axios.post("/api/v1/users/login", loginData);
+      const response= await axios.post(`${backend}/api/v1/users/login`, loginData);
       console.log("Login successful:", response);
 
       const userData= {...response.data.data.user};
@@ -83,7 +84,7 @@ export default function LogIn() {
 
     // API request
     try {
-      const response= await axios.post("/api/v1/users/register", registerData);
+      const response= await axios.post(`${backend}/api/v1/users/register`, registerData);
       console.log('Registration successful:', response);
 
       // alert(`Hello ${response.data.data.username}! \nRegistration successful. \n Please Login to continue.`);

@@ -1,9 +1,10 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import backend from "../constants";
 
 const fetchMonuments= createAsyncThunk("monuments/fetchMonuments", async()=>{
     try {
-        const response = await axios.get("api/v1/monuments/getallmonuments");
+        const response = await axios.get(`${backend}/api/v1/monuments/getallmonuments`);
         // console.log("response:", response);
         return response.data.data;
     } 

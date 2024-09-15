@@ -13,6 +13,7 @@ import axios from 'axios';
 
 import userImg from '../userImg.jpg';
 import { toast } from 'react-toastify';
+import backend from '../constants.js';
 
 export default function NavBar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -40,7 +41,7 @@ export default function NavBar() {
       console.log("User confirmed logout.");
       
       try {
-        const response= await axios.post("api/v1/users/logout");
+        const response= await axios.post(`${backend}/api/v1/users/logout`);
         console.log(response);
 
         setUser();

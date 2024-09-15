@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchMonuments } from '../../store/monumentsSlice';
 import MonumentCard from '../MonumentCard';
 import userContext from '../../contexts/userContext';
+import backend from '../../constants.js';
 
 export default function AdminForm({choice}) {
 
@@ -70,7 +71,7 @@ export default function AdminForm({choice}) {
             // console.log('Adding new monument', data); 
             
             try {
-                const response = await axios.post("api/v1/monuments/addmonument", data, {
+                const response = await axios.post(`${backend}/api/v1/monuments/addmonument`, data, {
                     headers: {
                         "Content-Type": "multipart/form-data"
                     }
@@ -98,7 +99,7 @@ export default function AdminForm({choice}) {
             // console.log('Editing monument', data); 
 
             try {
-                const response = await axios.patch("api/v1/monuments/editmonument", data, {
+                const response = await axios.patch(`${backend}/api/v1/monuments/editmonument`, data, {
                     headers: {
                         "Content-Type": "multipart/form-data"
                     }
@@ -119,7 +120,7 @@ export default function AdminForm({choice}) {
             // console.log('Deleting monument with ID:', formData.selectedMonument);
 
             try {
-                const response = await axios.post("api/v1/monuments/deletemonument", {
+                const response = await axios.post(`${backend}/api/v1/monuments/deletemonument`, {
                     _id: formData.selectedMonument 
                 });
 
@@ -138,7 +139,7 @@ export default function AdminForm({choice}) {
             // console.log('Fetching monument details for ID:', formData.selectedMonument);
 
             try {
-                const response = await axios.post("/api/v1/monuments/getmonument", {
+                const response = await axios.post(`${backend}/api/v1/monuments/getmonument`, {
                     _id: formData.selectedMonument
                 });
 
@@ -154,7 +155,7 @@ export default function AdminForm({choice}) {
         else if(choice==="All Users")
         {
             try {
-                const response = await axios.get("/api/v1/users/getallusers");
+                const response = await axios.get(`${backend}/api/v1/users/getallusers`);
 
                 // console.log(response.data.data);
                 setResult(response.data.data);
@@ -201,7 +202,7 @@ export default function AdminForm({choice}) {
 
     const handleDelete= async(user)=>{
         try {
-            const response= await axios.post("/api/v1/users/deleteuser", {
+            const response= await axios.post(`${backend}/api/v1/users/deleteuser`, {
                 _id: user._id
             });
 
