@@ -74,7 +74,8 @@ export default function AdminForm({choice}) {
                 const response = await axios.post(`${backend}/api/v1/monuments/addmonument`, data, {
                     headers: {
                         "Content-Type": "multipart/form-data"
-                    }
+                    },
+                    withCredentials: true
                 });
 
                 // console.log(response.data.data);
@@ -102,7 +103,8 @@ export default function AdminForm({choice}) {
                 const response = await axios.patch(`${backend}/api/v1/monuments/editmonument`, data, {
                     headers: {
                         "Content-Type": "multipart/form-data"
-                    }
+                    },
+                    withCredentials: true
                 });
 
                 // console.log(response.data.data); 
@@ -122,7 +124,9 @@ export default function AdminForm({choice}) {
             try {
                 const response = await axios.post(`${backend}/api/v1/monuments/deletemonument`, {
                     _id: formData.selectedMonument 
-                });
+                },{
+                    withCredentials: true
+                  });
 
                 // console.log(response.data.data);
                 setResult(response.data.data);
@@ -141,7 +145,9 @@ export default function AdminForm({choice}) {
             try {
                 const response = await axios.post(`${backend}/api/v1/monuments/getmonument`, {
                     _id: formData.selectedMonument
-                });
+                },{
+                    withCredentials: true
+                  });
 
                 // console.log(response.data.data);
                 setResult(response.data.data);
@@ -155,7 +161,9 @@ export default function AdminForm({choice}) {
         else if(choice==="All Users")
         {
             try {
-                const response = await axios.get(`${backend}/api/v1/users/getallusers`);
+                const response = await axios.get(`${backend}/api/v1/users/getallusers`, {
+                    withCredentials: true
+                  });
 
                 // console.log(response.data.data);
                 setResult(response.data.data);
