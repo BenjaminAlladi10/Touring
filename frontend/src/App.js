@@ -7,6 +7,8 @@ import { ThemeProvider } from './contexts/themeContext';
 import { UserProvider } from './contexts/userContext';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useDispatch } from 'react-redux';
+import {getTotals} from "./store/cartSlice.js";
 
 function App() {
   const [theme, setTheme]= useState(localStorage.getItem("preferredTheme") || "dark");
@@ -25,6 +27,11 @@ function App() {
     }
     localStorage.setItem("preferredTheme", theme);
   }, [theme]);
+
+  const dispatch= useDispatch();
+  useEffect(()=>{
+    dispatch(getTotals());
+  })
 
   const [user, setUser]= useState();
 
