@@ -11,6 +11,7 @@ import Cart from './components/Cart.js';
 import LogIn from './components/LogIn.js';
 import ErrorPage from './components/ErrorPage.js';
 import Admin from './components/Admin/Admin.js';
+import PaymentForm from './components/PaymentForm.js';
 
 import {Provider} from "react-redux";
 import appStore from './store/store.js';
@@ -47,6 +48,11 @@ const router= createBrowserRouter([
       {
         path: "/admin",
         element: <Admin/>
+      },
+      {
+        
+        path: "/checkout/payment",
+        element: <PaymentForm/>
       }
     ]
   }

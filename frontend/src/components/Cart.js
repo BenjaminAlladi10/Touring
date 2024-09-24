@@ -1,11 +1,18 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { addMonument, clearCart, getTotals, removeMonument } from '../store/cartSlice';
 import { toast } from 'react-toastify';
+import userContext from '../contexts/userContext.js';
+
+import { useNavigate } from "react-router-dom";
 
 const Cart = ()=>{
 
     const {cartItems, cartTotalQuantity, cartTotalAmount}= useSelector((state)=> state.cart);
+
+    const {user}= useContext(userContext);
+
+    const navigate= useNavigate();
     
     const dispatch= useDispatch();
     const handleIncrement = (item) => {
@@ -43,6 +50,16 @@ const Cart = ()=>{
           </p>
         </div>
       );
+    }
+
+    const handleCheckout= ()=>{
+      if(!user?.name)
+      {
+        toast.error("Pleasing Login!");
+        navigate("/login");
+        return;
+      }
+      navigate("/checkout/payment");
     }
     
     return (
@@ -102,14 +119,13 @@ const Cart = ()=>{
             </div>
 
             <div className="flex justify-end">
-              <button className="text-white bg-gray-800 hover:bg-gray-900 font-medium rounded-lg text-sm px-5 py-1 me-2 mb-2 dark:bg-gray-100 dark:hover:bg-gray-50 dark:border-gray-100 dark:text-black active:scale-95">
+              <button onClick={handleCheckout} className="text-white bg-gray-800 hover:bg-gray-900 font-medium rounded-lg text-sm px-5 py-1 me-2 mb-2 dark:bg-gray-100 dark:hover:bg-gray-50 dark:border-gray-100 dark:text-black active:scale-95">
                 Checkout
               </button>
             </div>
           </div>
         </div>
       </div>
-    ):"Hi");
+    ):"");
 };
-
 export default Cart;
