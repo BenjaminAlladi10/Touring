@@ -206,11 +206,19 @@ const getQRCode= asyncHandler(async(req, res)=>{
 
     // nodemailer:
     const transport= nodemailer.createTransport({
-        service: "gmail",
+        // service: "gmail",
+
+        host: 'smtp.gmail.com', // SMTP host
+        port: 587, // Port for TLS (587 is for STARTTLS)
+        secure: false,
 
         auth: {
             user: process.env.MY_EMAIL,
             pass: process.env.PASS
+        },
+
+        tls: {
+            rejectUnauthorized: false // Optional: Use true in production to ensure secure certificates
         }
     });
 
@@ -230,7 +238,18 @@ const getQRCode= asyncHandler(async(req, res)=>{
     };
 
     try {
-        const info=await transport.sendMail(mailOptions);
+        const info=await new Promise((resolve, reject)=>{
+            transport.sendMail(mailOptions, (error, info)=>{
+                if(error)
+                {
+                    reject(error);
+                }
+                else
+                {
+                    resolve(info);
+                }
+            });
+        })
 
         // console.log('Message sent:', info, info.messageId);
     } catch (error) {
