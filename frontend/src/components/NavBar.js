@@ -117,7 +117,7 @@ export default function NavBar() {
               <FontAwesomeIcon icon={faMoon} />
             </li>
 
-            {user && <li to="/" className="py-2 pl-3 text-black flex flex-col items-center cursor-pointer bg-blue-700 rounded md:bg-transparent hover:text-blue-700 md:p-0 dark:text-white">
+            {user && <li to="/" className="py-2 pl-3 text-black flex flex-col items-center cursor-pointer rounded md:bg-transparent hover:text-blue-700 md:p-0 dark:text-white">
                 <img src={userImg} alt="user" className="w-8 rounded-[50%] mt-2"/>
                 <span className="text-xs font-sans">{user.username}</span>
             </li>}

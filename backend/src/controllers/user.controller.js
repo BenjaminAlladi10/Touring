@@ -5,6 +5,9 @@ import {ApiResponse} from "../utils/apiResponse.js";
 import {User} from "../models/user.model.js";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
 
+import nodemailer from "nodemailer";
+import QRCode from "qrcode";
+
 
 const generateRefreshAndAccessToken= async(id)=>{
     try {
@@ -182,4 +185,61 @@ const deleteUser= asyncHandler(async(req, res)=>{
     .json(new ApiResponse(200, user, "Account deleted"));
 });
 
-export {registerUser, loginUser, logoutUser, getCurrentUser, getAllUsers, deleteUser};
+const getQRCode= asyncHandler(async(req, res)=>{
+    const {email, cartItems}= req?.body;
+
+    if(!email || !cartItems || cartItems?.length==0)
+    {
+        throw new ApiError(400, "Invalid data for QR Code");
+    }
+
+    // qrcode:
+    const data= JSON.stringify({email, cartItems});
+
+    const qrCode= await QRCode.toDataURL(data);
+    // console.log("qrCode:", qrCode);
+
+    if(!qrCode)
+    {
+        throw new ApiError(500, "Error in generating QR Code");
+    }
+
+    // nodemailer:
+    const transport= nodemailer.createTransport({
+        service: "gmail",
+
+        auth: {
+            user: process.env.MY_EMAIL,
+            pass: process.env.PASS
+        }
+    });
+
+    const mailOptions= {
+        from: process.env.MY_EMAIL,
+        to: req?.user?.email,
+        subject: 'Here is your QR Code!',
+        text: 'Scan the attached QR Code.',
+
+        attachments: [
+            {
+                filename: 'qrcode.png',
+                content: qrCode.split("base64,")[1],  // Extract base64 content
+                encoding: 'base64', // Specify the encoding
+            }
+         ]
+    };
+
+    try {
+        const info=await transport.sendMail(mailOptions);
+
+        // console.log('Message sent:', info, info.messageId);
+    } catch (error) {
+        console.log("Error in sending mail");
+        throw new ApiError(500, "Error in sending mail", error);
+    }
+
+    res.status(200)
+    .json(new ApiResponse(200, {qrCode}, "QR Code generated successfully"));
+});
+
+export {registerUser, loginUser, logoutUser, getCurrentUser, getAllUsers, deleteUser, getQRCode};

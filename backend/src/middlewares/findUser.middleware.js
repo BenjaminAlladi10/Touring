@@ -7,7 +7,7 @@ import jwt from "jsonwebtoken";
 const findUser= asyncHandler(async(req, res, next)=>{
     try {
         const accessToken= req.cookies?.accessToken;
-        console.log("accessToken:", accessToken);
+        // console.log("accessToken:", accessToken);
 
         if(!accessToken)
         {
@@ -15,7 +15,7 @@ const findUser= asyncHandler(async(req, res, next)=>{
         }
 
         const payload= jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET);
-        console.log("JWT Payload:", payload);
+        // console.log("JWT Payload:", payload);
 
         const user= await User.findById(payload._id).select("-password -refreshToken");
         if(!user)
@@ -24,7 +24,7 @@ const findUser= asyncHandler(async(req, res, next)=>{
         }
 
         req.user= user;
-        console.log(req.user, user);
+        // console.log(req.user, user);
         next();
     } 
     catch (error) {

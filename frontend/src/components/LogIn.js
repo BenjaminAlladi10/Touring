@@ -45,7 +45,7 @@ export default function LogIn() {
         withCredentials: true
       });
       
-      console.log("Login successful:", response);
+      // console.log("Login successful:", response);
 
       const userData= {...response.data.data.user};
 
