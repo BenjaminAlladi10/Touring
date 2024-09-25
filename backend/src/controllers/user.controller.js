@@ -253,7 +253,7 @@ const getQRCode= asyncHandler(async(req, res)=>{
 
         // console.log('Message sent:', info, info.messageId);
     } catch (error) {
-        console.log("Error in sending mail");
+        console.log("Error in sending mail", error);
         throw new ApiError(500, "Error in sending mail", error);
     }
 
