@@ -55,7 +55,7 @@ const Cart = ()=>{
     const handleCheckout= ()=>{
       if(!user?.username)
       {
-        toast.error("Pleasing Login!");
+        toast.error("Please Login!");
         navigate("/login");
         return;
       }
