@@ -17,7 +17,7 @@ export default function Body() {
       if(status==="idle")
       {
         // dispatch(fetchMonuments());
-        setTimeout(()=>dispatch(fetchMonuments()), 0.8*1000);
+        setTimeout(()=>dispatch(fetchMonuments()), 3000);
       }
   },[]);
 
@@ -25,7 +25,7 @@ export default function Body() {
   {
     return (
       <div className="flex justify-center items-center">
-          <span className="ml-1 text-lg text-gray-600 dark:text-white">Error: error.message</span>
+          <span className="ml-1 text-lg text-gray-600 dark:text-white">Error: {error.message}</span>
       </div>
     )
   }
