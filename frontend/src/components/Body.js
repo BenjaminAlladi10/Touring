@@ -16,8 +16,8 @@ export default function Body() {
   useEffect(()=>{
       if(status==="idle")
       {
-        // dispatch(fetchMonuments());
-        setTimeout(()=>dispatch(fetchMonuments()), 3000);
+        dispatch(fetchMonuments());
+        // setTimeout(()=>dispatch(fetchMonuments()), 3000);
       }
   },[]);
 
